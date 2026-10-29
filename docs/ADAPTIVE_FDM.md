@@ -15,7 +15,9 @@ by the application. No JIT/compiler installation is needed.
 
 Its explicit stability timestep is proportional to
 
-    dt ∝ porosity * viscosity * (L/N)^2 / [k * (Pmax+b)].
+$$
+\Delta t\propto\frac{\varepsilon\mu(L/N)^2}{k(P_{\max}+b)}
+$$
 
 At fixed other inputs, halving porosity approximately doubles the number of
 steps, and doubling the spatial intervals approximately quadruples it. Raising
@@ -33,12 +35,23 @@ The PDE physics, fixed-b slip relation, grid locations, reservoir boundary
 coefficients, external volumes, endpoint half-cell storage and initial node
 values match the reference model. The valve mixing approximation is unchanged.
 
-Let U=(P+b)/S, where S=max(Pu0,Pd0)+b. Taking the continuous-time limit of the
+Let $U=(P+b)/S$, where $S=\max(P_{u,0},P_{d,0})+b$. Taking the continuous-time limit of the
 reference transformed-pressure update and applying the chain rule gives
 
-    dU_j/dt = [k*S/(2*phi*mu*dx^2)] * (U_(j+1)^2 - 2*U_j^2 + U_(j-1)^2)
-    dU_0/dt = [k*A*S/(2*mu*dx*Vu_eff)] * (U_1^2 - U_0^2)
-    dU_N/dt = [k*A*S/(2*mu*dx*Vd_eff)] * (U_(N-1)^2 - U_N^2).
+$$
+\frac{dU_j}{dt}=\frac{kS}{2\varepsilon\mu\Delta x^2}
+\left(U_{j+1}^2-2U_j^2+U_{j-1}^2\right)
+$$
+
+$$
+\frac{dU_0}{dt}=\frac{kAS}{2\mu\Delta x\,V_{u,\mathrm{eff}}}
+\left(U_1^2-U_0^2\right)
+$$
+
+$$
+\frac{dU_N}{dt}=\frac{kAS}{2\mu\Delta x\,V_{d,\mathrm{eff}}}
+\left(U_{N-1}^2-U_N^2\right)
+$$
 
 BDF integrates these equations using an analytic sparse tridiagonal Jacobian.
 Its fixed tolerances are rtol=1e-8 and absolute tolerance 0.01 Pa/S for U.

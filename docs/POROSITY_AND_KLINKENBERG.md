@@ -62,11 +62,17 @@ The complete transient remains available for history matching.
 VU alone starts at Pui; DU, VD+DD and the core start at Pdi when DU's source is
 **Downstream initial**. All volumes reach Pf at a common unchanged temperature:
 
-    VU*Pui + (DU+VD+DD+Vp)*Pdi = (VU+DU+VD+DD+Vp)*Pf
-    Vp = [VU*(Pui−Pf) + (DU+VD+DD)*(Pdi−Pf)] / (Pf−Pdi)
+$$
+V_U P_{u,i}+(D_U+V_D+D_D+V_p)P_{d,i}
+=(V_U+D_U+V_D+D_D+V_p)P_f
+$$
+
+$$
+V_p=\frac{V_U(P_{u,i}-P_f)+(D_U+V_D+D_D)(P_{d,i}-P_f)}{P_f-P_{d,i}}
+$$
 
 For a separately entered initial DU pressure Pdui, replace the DU contribution
-in the numerator with DU*(Pdui−Pf). Retaining the charged tank pressure while
+in the numerator with $D_U(P_{du,i}-P_f)$. Retaining the charged tank pressure while
 assigning all VU+DU to it overstates initial inventory when DU started lower.
 Changing this assumption need not produce any particular expected porosity;
 review the measured states and physical setup rather than target a value.
@@ -77,13 +83,20 @@ Let Vu and Vd be the connected non-core volumes, Vp the core pore volume, and
 Pui/Pdi the initial tank pressures. The standard initial core pressure is Pdi.
 All compartments reach Pf at the same unchanged temperature:
 
-    Pui*Vu + Pdi*(Vd+Vp) = Pf*(Vu+Vd+Vp)
+$$
+P_{u,i}V_u+P_{d,i}(V_d+V_p)=P_f(V_u+V_d+V_p)
+$$
 
 Therefore:
 
-    Vp = [Vu*(Pui−Pf) + Vd*(Pdi−Pf)] / (Pf−Pdi)
-    Vbulk = pi*D²*L/4
-    porosity = Vp/Vbulk
+$$
+V_p=\frac{V_u(P_{u,i}-P_f)+V_d(P_{d,i}-P_f)}{P_f-P_{d,i}}
+$$
+
+$$
+V_{\mathrm{bulk}}=\frac{\pi D^2L}{4},\qquad
+\varepsilon=\frac{V_p}{V_{\mathrm{bulk}}}
+$$
 
 The calculation uses absolute pressures consistently. A common atmospheric offset
 cancels in this particular isothermal ideal-gas expression; it does not generally
@@ -92,13 +105,19 @@ required for the gas model and permeability analysis.
 
 ### Temperature and real-gas correction
 
-For each compartment/state define C=P/(Z*T), with T in kelvin. Then
+For each compartment and state, define $C=P/(ZT)$, with $T$ in kelvin. Then
 
-    Isolated tank:
-    Vp = [VU*(Cui−Cuf) + DU*(Cdui−Cduf) + Vd*(Cdi−Cdf)] / (Ccf−Cci)
+**Isolated tank:**
 
-    Combined storage:
-    Vp = [Vu*(Cui−Cuf) + Vd*(Cdi−Cdf)] / (Ccf−Cci)
+$$
+V_p=\frac{V_U(C_{u,i}-C_{u,f})+D_U(C_{du,i}-C_{du,f})+V_d(C_{d,i}-C_{d,f})}{C_{c,f}-C_{c,i}}
+$$
+
+**Combined storage:**
+
+$$
+V_p=\frac{V_u(C_{u,i}-C_{u,f})+V_d(C_{d,i}-C_{d,f})}{C_{c,f}-C_{c,i}}
+$$
 
 Initial core pressure is Pdi; final pressure is the mean of the two final pressure
 windows after their difference passes the user's tolerance. Each compartment may
@@ -116,7 +135,9 @@ The reference forward solver is unchanged. For the isolated-tank setting its
 adapter approximates instantaneous ideal-gas, isothermal VU–DU mixing without
 core flow during this short mixing step:
 
-    Pu(0+) = [VU*Pui + DU*Pdui] / (VU+DU)
+$$
+P_u(0^+)=\frac{V_U P_{u,i}+D_U P_{du,i}}{V_U+D_U}
+$$
 
 It then uses VU+DU as upstream storage, VD+DD as downstream storage, and a core
 initially at Pdi. This preserves the continuous ideal/isothermal inventory of
@@ -135,12 +156,14 @@ gas inventory is not independent validation of those inventory assumptions.
 
 The relation is
 
-    k_app(Pm) = k_infinity*(1 + b/Pm)
-             = k_infinity + (k_infinity*b)*(1/Pm).
+$$
+k_{\mathrm{app}}(P_m)=k_{\infty}\left(1+\frac{b}{P_m}\right)
+=k_{\infty}+(k_{\infty}b)\frac{1}{P_m}
+$$
 
 Plot apparent permeability against reciprocal **mean absolute pressure**. The
 intercept is intrinsic permeability; slope/intercept is b, using consistent units.
-The app plots x=1/Pm in MPa^-1 and y in microdarcy, then reports b in kPa.
+The app plots $x=1/P_m$ in $\mathrm{MPa}^{-1}$ and $y$ in microdarcy, then reports $b$ in kPa.
 Pm is the mean pressure in each selected late-time interval, not simply initial
 upstream pressure and not the initial pressure difference.
 

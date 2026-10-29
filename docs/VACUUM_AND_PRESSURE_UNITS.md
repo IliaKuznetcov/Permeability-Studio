@@ -17,7 +17,9 @@ zero absolute pressure or guarantee identical apparent porosity across runs.
 
 The conversion is:
 
-    Pabsolute = Pgauge + measured local Patmospheric + sensor correction
+$$
+P_{\mathrm{absolute}}=P_{\mathrm{gauge}}+P_{\mathrm{atmospheric,measured}}+P_{\mathrm{sensor\ correction}}
+$$
 
 For example, -12 psig with measured atmospheric pressure 13 psia is +1 psia.
 These are illustrative values, not an atmospheric-pressure recommendation.
