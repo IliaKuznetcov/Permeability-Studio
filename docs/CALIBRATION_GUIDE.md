@@ -53,7 +53,9 @@ The gas model choices are nitrogen Peng–Robinson or ideal gas (Z=1). The PR ca
 
 For a straight through-bore with ID and gas-accessible length entered in mm:
 
-`Vp [cm3] = pi * ID_mm^2 * length_mm / 4000`
+$$
+V_p\,[\mathrm{cm}^3]=\frac{\pi\,d_i^2\,L_p}{4000}\quad (d_i,L_p\text{ in mm})
+$$
 
 A more accurate measured/certified gas volume may be entered directly. Outer diameter does not enter this bore-volume formula. Geometry input boxes are a calculator convenience; the numeric Vp field is the authoritative value retained for the run. Record detailed geometry provenance in Notes when needed.
 
@@ -69,32 +71,38 @@ VU/VD are the isolated tank volumes. DU/DD are bounded by the plug faces and the
 
 For each run:
 
-`A = Pi/(Zi*Ti)`, `B = Pb/(Zb*Tb)`, `C = Pf/(Zf*Tf)`
+$$
+A=\frac{P_i}{Z_iT_i},\qquad B=\frac{P_b}{Z_bT_b},\qquad C=\frac{P_f}{Z_fT_f}
+$$
 
 The balance is:
 
-`(A-C)*Vtank + (B-C)*Vreceive = 0`
+$$
+(A-C)V_{\mathrm{tank}}+(B-C)V_{\mathrm{receive}}=0
+$$
 
-With parameter order `[VU, VD, DU, DD]`:
+With parameter order $[V_U,V_D,D_U,D_D]$:
 
 | Run | Design row | Right-hand side |
 |---|---|---|
-| Upstream through-bore | `[A-C, 0, B-C, B-C]` | `(C-B)*Vp` |
-| Downstream through-bore | `[0, A-C, B-C, B-C]` | `(C-B)*Vp` |
-| Upstream solid/side-only | `[A-C, 0, B-C, 0]` | `(C-B)*Vp` |
-| Downstream solid/side-only | `[0, A-C, 0, B-C]` | `(C-B)*Vp` |
+| Upstream through-bore | $[A-C,\ 0,\ B-C,\ B-C]$ | $(C-B)V_p$ |
+| Downstream through-bore | $[0,\ A-C,\ B-C,\ B-C]$ | $(C-B)V_p$ |
+| Upstream solid/side-only | $[A-C,\ 0,\ B-C,\ 0]$ | $(C-B)V_p$ |
+| Downstream solid/side-only | $[0,\ A-C,\ 0,\ B-C]$ | $(C-B)V_p$ |
 
 The solver uses unweighted ordinary least squares via NumPy's SVD-based `lstsq`. At least four independent included rows and rank four are required. Through-bore-only rows cannot distinguish DU from DD. Known nonzero cavity volumes establish the absolute volume scale. More than four independent runs are needed to estimate residual-based SE.
 
-The calculation tab reports volumes, conditional OLS standard errors, approximate normal 95% widths `1.96*SE`, rank, condition number, SSE, RMSE, and R². R² and all fitting diagnostics use the same included records. No excluded row contributes a zero-valued RHS to the R² calculation.
+The calculation tab reports volumes, conditional OLS standard errors, approximate normal 95% widths $1.96\,\mathrm{SE}$, rank, condition number, SSE, RMSE, and R². R² and all fitting diagnostics use the same included records. No excluded row contributes a zero-valued RHS to the R² calculation.
 
-`r = X*beta - y`. With kPa and cm3, the independent closure display in mmol is:
+$r=X\boldsymbol{\beta}-y$. With kPa and cm3, the independent closure display in mmol is:
 
-`n_final - n_initial = -r / 8.314462618`
+$$
+n_{\mathrm{final}}-n_{\mathrm{initial}}=-\frac{r}{8.314462618}\quad\text{(mmol, for }r\text{ in kPa cm}^3\text{/K)}
+$$
 
 The residual plot follows the included table order. The Excel export includes each design row, RHS, fitted RHS, residual and closure error. The uncertainty is conditional on the design matrix; it does not propagate pressure, temperature, thermocouple placement, barometric, plug-geometry, Z-model, or correlated-sample uncertainty.
 
-Nonpositive fitted volumes and numerical ill-conditioning are reported for review. Values are never silently clipped to be positive. The expected `Pb < Pf < Pi` ordering is checked as a review note. Numeric readiness and a successful fit do not certify thermal equilibrium, leak tightness, or the correctness of selected valve boundaries.
+Nonpositive fitted volumes and numerical ill-conditioning are reported for review. Values are never silently clipped to be positive. The expected $P_b<P_f<P_i$ ordering is checked as a review note. Numeric readiness and a successful fit do not certify thermal equilibrium, leak tightness, or the correctness of selected valve boundaries.
 
 ## Sessions and exports
 

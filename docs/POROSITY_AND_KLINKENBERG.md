@@ -221,21 +221,9 @@ Primary references:
 - University of Kansas TORP pulse-decay apparatus:
   https://torp.ku.edu/pulse-decay
 
-## Reproducible demonstrations and tests
+## Experimental example
 
-Open `examples/synthetic_klinkenberg_demo.json` in Pulse picker, select any row,
-open analysis → Klinkenberg, confirm the synthetic conditions and fit the three
-points. The reference FDM generated them with intrinsic k=3e-17 m² and b=200 kPa.
-Expected regression: approximately k∞=30.4002 µD and b=200.0011 kPa. The small
-bias reflects the finite-grid numerical/late-time approximation. These are
-synthetic measurements, not experimental validation.
-
-Recreate with `python examples/create_klinkenberg_demo.py`.
-
-The porosity tests independently construct gas inventories with known phi=0.237
-and recover that value under isothermal, varying-temperature and PR-nitrogen
-conditions. UI tests verify confirmation, applying phi/b, changed-input handling,
-point exclusion, common-input checks, plots and session round trips.
-
-Modules: `porosity.py`, `porosity_view.py`, `klinkenberg_view.py`. The reference
-`fdm_solver.py` remains unchanged.
+Load `examples/pulse_session.json` and inspect the saved analyses for
+Shale Sample 1. Use consistent geometry, volumes, pressure basis, and
+analysis settings before recalculating permeability or Klinkenberg fits.
+See [SHALE_SAMPLE_1_INPUTS.md](SHALE_SAMPLE_1_INPUTS.md).

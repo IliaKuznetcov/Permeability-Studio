@@ -63,8 +63,9 @@ Use VU+DU and VD+DD for their respective external storage when the eventual veri
 | `channel_metadata` | Source channel mappings, units, locations and import diagnostics. |
 | `analysis_setup` | Project pressure basis/barometric input and copied calibrated-volume reference/provenance. |
 
-## Try the new pulse demo
+## Experimental example
 
-Use **Pulse picker → Open pulses** to open `examples/synthetic_pulse_demo.json`. It contains one clearly labelled synthetic pulse with both pressure channels, before/after windows and valve t0=300 s. It is for manual-control/export practice and has no assigned or fitted permeability. It is distinct from `examples/synthetic_demo.json`, which is the existing known-volume calibration demonstration.
+Load `examples/pulse_session.json` using **Pulse picker → Open pulses**.
+The file contains anonymized measured shale pulse-decay data. See
+[SHALE_SAMPLE_1_INPUTS.md](SHALE_SAMPLE_1_INPUTS.md) for reference geometry and pressures.
 
-The captured pulse data can be analyzed using the permeability tools described in [PERMEABILITY_GUIDE.md](PERMEABILITY_GUIDE.md).
