@@ -44,9 +44,6 @@ Run `build_windows.bat` on a Windows computer with Python installed to produce `
 
 Review the assumptions, pressure basis, calibration topology, convergence, and fit warnings before interpreting experimental results. The baseline pulse-decay treatment includes assumptions about isothermal gas flow, calibrated boundary storage, and constitutive transport laws; model outputs are not independent experimental validation.
 
-## Data and licensing
-
-The `examples/` directory includes anonymized shale pulse-decay and check-plug calibration sessions with recorded time-series measurements and saved analysis results. Local source paths, sample labels, and source-workbook hashes have been anonymized; measurement values are retained. The public example is not synthetic. Stored analysis results may need to be recalculated after editing metadata, because fit fingerprints can depend on pulse labels. Confirm authorization before distributing research data or intellectual property. No software license is supplied in this archive; choose and add a license only after verifying publishing rights.
 
 ## Example sessions
 
