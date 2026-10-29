@@ -2,7 +2,7 @@
 
 **Version 1.0.0 — first public source release**
 
-Permeability Studio is a Python/PySide6 desktop application for processing gas pulse-decay experiments, calibrating gas-accessible volumes, and estimating permeability and porosity. The source release is based on an internally developed and tested application previously designated 4.5.2; the public version number starts at 1.0.0. Historical numerical methods and saved-session schemas are preserved.
+Permeability Studio is a Python/PySide6 desktop application for processing gas pulse-decay experiments, calibrating gas-accessible volumes, and estimating permeability and porosity.
 
 ## Features
 
