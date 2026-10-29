@@ -1,11 +1,8 @@
-# Porosity and Klinkenberg workflow — version 4.3
+# Porosity and Klinkenberg workflow
 
-## What changed
+## Overview
 
-The original permeability fit treated porosity as an entered, fixed model input.
-Version 4.2 adds a separate gas-balance estimator, with explicit application of the
-result. It also adds a review table, selection controls and plot to the existing
-cross-pulse Klinkenberg regression. Neither operation silently changes old fits.
+Porosity is estimated separately from the permeability fitting workflow and must be explicitly applied to subsequent fits. A sample-level regression combines selected pulse results for Klinkenberg analysis. Previously saved fitting results are not silently overwritten.
 
 ## Estimate porosity from a captured pulse
 
@@ -74,7 +71,7 @@ assigning all VU+DU to it overstates initial inventory when DU started lower.
 Changing this assumption need not produce any particular expected porosity;
 review the measured states and physical setup rather than target a value.
 
-### Isothermal Boyle balance: combined storage (legacy)
+### Isothermal Boyle balance: combined storage
 
 Let Vu and Vd be the connected non-core volumes, Vp the core pore volume, and
 Pui/Pdi the initial tank pressures. The standard initial core pressure is Pdi.
@@ -172,7 +169,7 @@ upstream pressure and not the initial pressure difference.
    fit** applies b only as the fixed input for the currently selected pulse.
    Run that FDM fit again. This is not a joint nonlinear fit of all pulses.
 
-Previous sample regressions are retained as historical calculations; opening the
+Saved sample regressions are retained; opening the
 review window requires recomputation before they can be applied or exported.
 The saved point list contains the pulse UIDs, source-fit fingerprints and inputs.
 If you change porosity or other sample properties, recompute the individual

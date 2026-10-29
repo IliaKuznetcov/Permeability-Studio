@@ -1,4 +1,4 @@
-# Faster FDM inversion — version 4.5
+# Adaptive FDM inversion
 
 ## Select the time integrator
 

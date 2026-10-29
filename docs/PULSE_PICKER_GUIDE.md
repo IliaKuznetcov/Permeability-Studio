@@ -1,12 +1,8 @@
-> Version 4.1: selected-pulse analysis is now available. See [PERMEABILITY_GUIDE.md](PERMEABILITY_GUIDE.md) for late-time methods, FDM fitting and saved results. Historical capture instructions follow.
+# Pulse picker guide
 
-# Paired-state Pulse picker — version 4
+For late-time methods, FDM fitting, and stored results, see [PERMEABILITY_GUIDE.md](PERMEABILITY_GUIDE.md).
 
 Use this tab for actual rock-plug pulse selection. Check-plug ROI and Volume calculation remain separate calibration workflows.
-
-## Before changing versions
-
-Save the existing eight-run calibration collection using **Volume calculation → Save session**. Open that JSON file in version 4 using **Volume calculation → Open session**. The calibration session format and equations are unchanged, so the captured calibration ROIs do not need to be picked again.
 
 ## One pulse, step by step
 
@@ -71,4 +67,4 @@ Use VU+DU and VD+DD for their respective external storage when the eventual veri
 
 Use **Pulse picker → Open pulses** to open `examples/synthetic_pulse_demo.json`. It contains one clearly labelled synthetic pulse with both pressure channels, before/after windows and valve t0=300 s. It is for manual-control/export practice and has no assigned or fitted permeability. It is distinct from `examples/synthetic_demo.json`, which is the existing known-volume calibration demonstration.
 
-Version 4 prepares the inputs for history matching; it does not claim an FDM match or offer an active permeability algorithm yet. The next-stage plan is in `NEXT_STEPS.md`.
+The captured pulse data can be analyzed using the permeability tools described in [PERMEABILITY_GUIDE.md](PERMEABILITY_GUIDE.md).

@@ -1,8 +1,8 @@
-> Version 4.5 adds the faster **Adaptive BDF** integrator; see [ADAPTIVE_FDM.md](ADAPTIVE_FDM.md). The original explicit solver remains selectable. Earlier releases added isolated VU/DU initialization, gas-balance porosity and multi-pulse Klinkenberg regression. The FDM still uses porosity as a fixed input after explicit application.
+> The adaptive BDF and explicit finite-difference solvers are documented in [ADAPTIVE_FDM.md](ADAPTIVE_FDM.md).
 
-# Permeability analysis — version 4.1
+# Permeability analysis
 
-This release adds a working first inversion stage to the paired-pulse application.
+This guide describes permeability inversion of captured pulses.
 Start with one well-behaved captured pulse. Fit permeability while holding volumes,
 porosity, viscosity, geometry and the Klinkenberg factor fixed. Compare the pressure
 curves, residuals and late-time estimate before applying it to more pulses.
@@ -74,7 +74,9 @@ A final window which has not reached equilibrium can also explain that differenc
 
 It fits the explicitly selected tail using
 
-    ln[(Pu(t) − Pd(t)) / (Pu_initial − Pd_initial)] = intercept + slope*t.
+$$
+\ln\!\left(\frac{P_u(t)-P_d(t)}{P_{u,0}-P_{d,0}}\right)=c_0+m t
+$$
 
 Missing differences and values at or below the entered positive noise floor are
 excluded and counted. At least five usable observations and a negative slope are
@@ -82,14 +84,24 @@ required. The intercept is fitted; no sensor-offset correction is fitted.
 
 The Brace estimate assumes negligible core storage:
 
-    k_app = −slope * mu * L / [A * P_ref * (1/Vu + 1/Vd)].
+$$
+k_{\mathrm{app,Brace}}=\frac{-m\,\mu L}{A\,P_{\mathrm{ref}}\left(1/V_u+1/V_d\right)}
+$$
 
 For ideal isothermal gas, P_ref is the mean absolute pressure in the chosen tail.
 The Dicker–Smits storage correction uses
 
-    Vp = porosity*A*L; a = Vp/Vu; c = Vp/Vd
-    (q² − a*c) sin(q) − (a+c) q cos(q) = 0
-    f = q1²/(a+c); k_app_corrected = k_app_Brace/f.
+$$
+V_p=\varepsilon A L,\qquad a=\frac{V_p}{V_u},\qquad c=\frac{V_p}{V_d}
+$$
+
+$$
+(q^2-ac)\sin(q)-(a+c)q\cos(q)=0
+$$
+
+$$
+f=\frac{q_1^2}{a+c},\qquad k_{\mathrm{app,corrected}}=\frac{k_{\mathrm{app,Brace}}}{f}
+$$
 
 The first positive root is solved on (0, pi) using a continuous determinant,
 with the trivial q=0 root removed. This avoids tangent and rational-function poles
@@ -130,7 +142,7 @@ rerun with the original solver at the fitted k. The maximum discrepancy between
 cached interpolation and that final direct run is reported.
 
 A forward evaluation defaults to 250,000 explicit steps to bound runtime and
-memory. Version 4.4.1 exposes **Maximum FDM steps per solve** in the analysis form;
+memory. The analysis form exposes **Maximum FDM steps per solve**;
 it is saved per pulse. Raise that budget deliberately for a larger solve, or
 reduce spatial intervals for exploration/shorten the captured transient.
 Do not change measured physical inputs simply to bypass the resource limit.
@@ -152,7 +164,9 @@ Sample ID on comparable pulses. The Klinkenberg button combines at least three
 current late-time estimates for that sample, requiring matching physical inputs,
 R² >= 0.98 for each, and at least 10% mean-pressure span. It fits
 
-    k_app = k_infinity + k_infinity*b/Pmean.
+$$
+k_{\mathrm{app}}=k_\infty\left(1+\frac{b}{P_{\mathrm{mean}}}\right)
+$$
 
 Nonpositive intercepts and negative slip estimates are rejected. Review all tail
 warnings yourself. This unweighted cross-pulse regression is **not joint FDM
@@ -167,14 +181,11 @@ propagation, real-gas EOS, thermal transport, FVM and fall-off are later extensi
 - Results are fingerprinted against the actual retained samples, pulse definition,
   channel units/mapping, pressure basis, barometric pressure, solver and inputs.
   Changing these invalidates a result; it must be recalculated before display/export.
-- Version-4.0.1 pulse/calibration sessions remain readable. New optional fields do
-  not change calibration equations or recorded samples. An older application may
-  discard new analysis fields if you resave with that older version.
 - The existing XLSX pulse export retains its raw/state sheets. Complete computed
   analysis results are retained in pulse-session JSON or separate result JSON.
 - For a no-GUI reproduction:
 
-      python analyze_pulse_session.py examples/synthetic_fdm_demo.json result.json
+      python analyze_pulse_session.py examples/pulse_session.json result.json
 
   Use `--pulse "exact label"`, `--method late|fdm|both`, or `--settings inputs.json`.
   Settings JSON uses the SI field names in `AnalysisSettings`.
@@ -197,4 +208,4 @@ and the baseline equilibrium/inventory regression. New tests cover the independe
 symmetric eigenvalue condition, analytical exponential-tail recovery, fixed-slip
 FDM recovery with delayed observations/missing values, cross-pressure Klinkenberg
 recovery, cancellation/budgets, unit conversion, persistence and real dialog actions.
-See `VALIDATION_4_1.md`. Numerical recovery is not validation against a real experiment.
+Numerical recovery is not, by itself, validation against a real experiment.

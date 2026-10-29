@@ -1,8 +1,6 @@
-# Pulse picker architecture — version 4.0.1
+# Application architecture
 
-Source-checked on 28 October 2026. This document describes the current implementation, including paired pulse capture and check-plug calibration. History matching and the late-time permeability method are not implemented in this version.
-
-Version 4.0.1 simplifies the source syntax while retaining these modules and call paths. See `CODE_GUIDE.md` for a reading order, examples and explanations of the remaining Python/Qt features.
+This guide describes the application modules, UI event flow, calibration, pulse selection and permeability analysis.
 
 ## How to read this document
 
@@ -74,10 +72,10 @@ sequenceDiagram
     participant N as NumPy
     V->>C: calculate() from button click
     C->>S: fit_project_runs(project.runs, project.eos)
-    Note over S: Validate exclusions; inputs_for_run() for each included run
+    Note over S: Validate exclusions and prepare inputs_for_run() for each included run
     Note over S: Convert pressures to absolute kPa and temperatures to K
     Note over S: nitrogen_z() when Peng–Robinson is selected and Z is not overridden
-    Note over S: fit_volumes(); design_row() for each prepared run
+    Note over S: Use fit_volumes() and design_row() for each prepared run
     S->>N: np.linalg.lstsq(X, y, rcond=None)
     N-->>S: volumes, rank, singular values
     Note over S: Compute residuals, diagnostics and conditional standard errors
@@ -179,12 +177,10 @@ It writes/prints the fit without starting Qt. Changing `calibration.py` affects 
 | Excel sheets or session format | `calibration_io.py` or `pulse_capture_io.py` |
 | Main tabs, application composition or shared import flow | `controller.py`, `view.py`, `app.py` |
 
-`legacy_controller.py`, `legacy_view.py` and the older `export.py` are retained for the earlier picker/regression path. The version 4 launcher uses the paired-pulse controller/view described above.
-
-For the next stage, FDM history matching and Dicker–Smits late-time calculations should live in additional core modules, with the algorithm selector and fitting actions in a corresponding UI/controller. Those are proposed extensions; no such permeability calculation is currently called by version 4.
+The `legacy_controller.py`, `legacy_view.py` and `export.py` modules support the alternative picker/export path. The paired-pulse workflow described above is the primary application flow.
 
 
-## Version 4.1 permeability path
+## Permeability analysis path
 
 Select captured pulse → `PulseCaptureController.analyze_selected` →
 `PermeabilityDialog` → `extract_trace` from the pulse's own snapshot →
@@ -198,7 +194,7 @@ source samples and conditions. The shared import model is not used as a
 substitute for an older pulse's retained recording.
 
 
-## Version 4.2 gas balance and sample regression
+## Gas balance and sample regression
 
 - Analysis → `PorosityDialog` → `porosity_from_pulse` → closed gas inventory / optional existing `nitrogen_z` → per-pulse saved estimate → explicit phi input update.
 - Analysis → `KlinkenbergDialog` → reviewed current saved late-time fits → `fit_klinkenberg` → plotted sample regression → `PulseProject.sample_results` → optional fixed-b input update.

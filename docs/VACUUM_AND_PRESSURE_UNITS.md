@@ -1,4 +1,4 @@
-# Vacuum and pressure display — version 4.4
+# Vacuum and pressure display
 
 ## Evacuated core and downstream storage
 
@@ -80,6 +80,4 @@ pressure inputs retain exact canonical values behind display rounding. The
 choice lasts for the current application run. JSON/Excel exports keep their
 existing explicit canonical/original units rather than relabelling stored data.
 
-Older saved analysis results need recalculation after upgrading because the
-new sensor-correction inputs are now included in their fingerprints. Earlier
-sessions load with both corrections zero. The FDM forward solver is unchanged.
+Analysis fingerprints include sensor-correction inputs. Changing these inputs requires recalculation of the corresponding results. The FDM forward solver is unchanged.
