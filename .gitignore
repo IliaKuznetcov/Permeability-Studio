@@ -1,0 +1,40 @@
+# Python caches and environments
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+.venv-build/
+venv/
+env/
+
+# Build products
+build/
+dist/
+*.spec
+
+# Local IDE / OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# User recordings, sessions, and temporary outputs
+*.xlsx
+*.xls
+*.csv
+*.jsonl
+*.log
+*.tmp
+~$*
+
+
+# Keep scientific test data outside a public release until reviewed
+private_data/
+
+# Allow anonymized experimental examples
+!examples/
+!examples/**/*.xlsx
+!examples/**/*.xls
+!examples/**/*.csv
